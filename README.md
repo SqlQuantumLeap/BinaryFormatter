@@ -23,10 +23,7 @@ Source binary file = `1234567890ABCDEF`
 Output file, using a _ChunkSize_ of `3`, contains:
 
 ```
-123\
-456\
-789\
-0AB\
-CDE\
-F
+123456\
+7890AB\
+CDEF
 ```
