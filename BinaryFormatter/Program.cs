@@ -41,18 +41,18 @@ namespace BinaryFormatter
 					{
 						_FilePath = _Arg;
 					}
-					else if (_OutFile == string.Empty)
+					else if (_OutFile == String.Empty)
 					{
 						_OutFile = _Arg;
 					}
 				}
 			}
 
-			if (_FilePath == string.Empty)
+			if (_FilePath == String.Empty)
 			{
                 throw new ArgumentNullException("You must specify a source file.");
 			}
-			if (_OutFile == string.Empty)
+			if (_OutFile == String.Empty)
 			{
 				_OutFile = @".\Assembly.sql";
 			}
@@ -126,9 +126,10 @@ namespace BinaryFormatter
             System.Console.WriteLine("line are appended with the line-continuation character of: \\");
 
             System.Console.WriteLine("\nUsage:");
-            System.Console.WriteLine("\n\tBinaryFormatter path\\to\\binary_file.ext path\\to\\Output.sql [ ChunkSize ]");
+            System.Console.WriteLine("\n\tBinaryFormatter path\\to\\binary_file.ext [path\\to\\OutputFile.sql] [ChunkSize]");
             System.Console.WriteLine("\n\tChunkSize = the number of bytes per row. A byte is 2 characters: 00 - FF.");
             System.Console.WriteLine("\tMaximum line length = (ChunkSize * 2) + 1.");
+            System.Console.WriteLine("\tDefault OutputFile = Assembly.sql\n");
             System.Console.WriteLine("\tDefault ChunkSize = 10000\n");
             return;
         }

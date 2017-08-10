@@ -9,8 +9,24 @@ final line being appended with the T-SQL line-continuation character: `/`.
 
 **Usage:**
 
-`BinaryFormatter path\to\binary_file.ext path\to\Output.sql [ ChunkSize ]`
+`BinaryFormatter path\to\binary_file.ext [ path\to\OutputFile.sql ] [ ChunkSize ]`
 
 * _ChunkSize_ = the number of bytes per row. A byte is 2 characters: 00 - FF.
 * Maximum line length = (ChunkSize * 2) + 1.
+* Default OutputFile = Assembly.sql
 * Default ChunkSize = 10000
+
+**Example:**
+
+Source binary file = `1234567890ABCDEF`
+
+Output file, using a _ChunkSize_ of `3`, contains:
+
+```
+123\
+456\
+789\
+0AB\
+CDE\
+F
+```
