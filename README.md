@@ -13,7 +13,7 @@ final line being appended with the T-SQL line-continuation character: `/`.
 
 * _ChunkSize_ = the number of bytes per row. A byte is 2 characters: 00 - FF.
 * Maximum line length = (ChunkSize * 2) + 1.
-* Default OutputFile = Assembly.sql
+* Default OutputFile = {binary_file_name}.sql
 * Default ChunkSize = 10000
 
 **Example:**

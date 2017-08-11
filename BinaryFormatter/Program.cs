@@ -3,6 +3,8 @@
  * Version 1.0.1
  * Copyright (c) 2009-2017 Solomon Rutzky. All rights reserved.
  *
+ * Location: https://github.com/SqlQuantumLeap/BinaryFormatter
+ * 
  * Blog: https://SqlQuantumLeap.com/
  *
  */
@@ -54,7 +56,7 @@ namespace BinaryFormatter
 			}
 			if (_OutFile == String.Empty)
 			{
-				_OutFile = @".\Assembly.sql";
+                _OutFile = Path.GetFileNameWithoutExtension(_FilePath) + @".sql";
 			}
 
 			FileStream _FileIn = null;
@@ -91,6 +93,8 @@ namespace BinaryFormatter
 										_DataOut.WriteLine(@"\");
 									}
 								}
+
+                                _DataOut.WriteLine(String.Empty);
 							}
 						}
 					}
@@ -129,8 +133,8 @@ namespace BinaryFormatter
             System.Console.WriteLine("\n\tBinaryFormatter path\\to\\binary_file.ext [path\\to\\OutputFile.sql] [ChunkSize]");
             System.Console.WriteLine("\n\tChunkSize = the number of bytes per row. A byte is 2 characters: 00 - FF.");
             System.Console.WriteLine("\tMaximum line length = (ChunkSize * 2) + 1.");
-            System.Console.WriteLine("\tDefault OutputFile = Assembly.sql\n");
-            System.Console.WriteLine("\tDefault ChunkSize = 10000\n");
+            System.Console.WriteLine("\tDefault ChunkSize = 10000");
+            System.Console.WriteLine("\tDefault OutputFile = {binary_file_name}.sql\n");
             return;
         }
     }
