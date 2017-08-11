@@ -5,7 +5,7 @@ text file containing the hex representation of the source bytes.
 
 A feature / benefit of BinaryFormatter is that it splits the hex string
 across N lines of "ChunkSize" bytes each, with all lines prior to the
-final line being appended with the T-SQL line-continuation character: `/`.
+final line being appended with the T-SQL line-continuation character: `\`. This makes it easier to work with long hex strings (anything over 100k characters).
 
 **Usage:**
 
@@ -13,8 +13,8 @@ final line being appended with the T-SQL line-continuation character: `/`.
 
 * _ChunkSize_ = the number of bytes per row. A byte is 2 characters: 00 - FF.
 * Maximum line length = (ChunkSize * 2) + 1.
-* Default OutputFile = {binary_file_name}.sql
 * Default ChunkSize = 10000
+* Default OutputFile = {binary_file_name}.sql
 
 **Example:**
 
