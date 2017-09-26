@@ -1,6 +1,6 @@
 ﻿/*
  * BinaryFormatter
- * Version 1.0.1
+ * Version 1.0.2
  * Copyright (c) 2009-2017 Solomon Rutzky. All rights reserved.
  *
  * Location: https://github.com/SqlQuantumLeap/BinaryFormatter
@@ -18,7 +18,7 @@ namespace BinaryFormatter
 	{
 		static void Main(string[] args)
 		{
-            if (args.Length < 2)
+            if (args.Length < 1)
             {
                 DisplayUsage();
 
@@ -26,6 +26,7 @@ namespace BinaryFormatter
             }
 
             int _ChunkSize = 10000;
+            bool _ChunkSizeIsCustom = false;
 			string _FilePath = String.Empty;
 			string _OutFile = String.Empty;
 
@@ -36,6 +37,7 @@ namespace BinaryFormatter
 				if (int.TryParse(_Arg, out _TempSize))
 				{
 					_ChunkSize = _TempSize;
+                    _ChunkSizeIsCustom = true;
 				}
 				else
 				{
@@ -56,8 +58,45 @@ namespace BinaryFormatter
 			}
 			if (_OutFile == String.Empty)
 			{
-                _OutFile = Path.GetFileNameWithoutExtension(_FilePath) + @".sql";
+                _OutFile = Path.GetDirectoryName(_FilePath) + @"\" +
+                    Path.GetFileNameWithoutExtension(_FilePath) + @".sql";
 			}
+            if (!_ChunkSizeIsCustom)
+            {
+                string _CustomChunkSizeString;
+                int _CustomChunkSizeInt;
+                bool _GotValidAnswer = false;
+
+                while (!_GotValidAnswer)
+                {
+                    Console.Write("Chunk Size [ {0} ]: ", _ChunkSize);
+                    _CustomChunkSizeString = Console.ReadLine();
+                    if (String.IsNullOrWhiteSpace(_CustomChunkSizeString))
+                    {
+                        _GotValidAnswer = true;
+                    }
+                    else
+                    {
+                        if (int.TryParse(_CustomChunkSizeString, out _CustomChunkSizeInt))
+                        {
+                            if (_CustomChunkSizeInt > 0)
+                            {
+                                _GotValidAnswer = true;
+                                _ChunkSize = _CustomChunkSizeInt;
+                                _ChunkSizeIsCustom = true; // not used below, but don't leave in inconsistent state
+                            }
+                            else
+                            {
+                                DisplayError("ChunkSize must be > 0.");
+                            }
+                        }
+                        else
+                        {
+                            DisplayError("ChunkSize must be a number.");
+                        }
+                    } /* if (String.IsNullOrWhiteSpace(_CustomChunkSizeString)) ... else */
+                }
+            }
 
 			FileStream _FileIn = null;
 			BinaryReader _DataIn = null;
@@ -102,16 +141,28 @@ namespace BinaryFormatter
 			}
 			catch (Exception _Exception)
 			{
-				System.Console.WriteLine(_Exception.Message);
-                System.Console.WriteLine("\n\tPress the <any> key to continue...\n");
-				System.Console.ReadLine();
+                DisplayError(_Exception.Message);
+                Console.WriteLine("\n\tPress the <any> key to continue...\n");
+				Console.ReadLine();
 			}
 			finally
 			{
-				_DataOut.Dispose();
-				_FileOut.Dispose();
-				_DataIn.Dispose();
-				_FileIn.Dispose();
+                if (_DataOut != null)
+                {
+                    _DataOut.Dispose();
+                }
+                if (_FileOut != null)
+                {
+                    _FileOut.Dispose();
+                }
+                if (_DataIn != null)
+                {
+                    _DataIn.Dispose();
+                }
+                if (_FileIn != null)
+                {
+                    _FileIn.Dispose();
+                }
 			}
 
 			
@@ -120,7 +171,8 @@ namespace BinaryFormatter
         private static void DisplayUsage()
         {
             System.Console.WriteLine("\nBinaryFormatter");
-            System.Console.WriteLine("Version 1.0.1");
+            System.Console.WriteLine("Version {0}",
+                System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
             System.Console.WriteLine("Copyright (c) 2009-2017 Solomon Rutzky. All rights reserved.\n");
             System.Console.WriteLine("https://SqlQuantumLeap.com/\n");
 
@@ -134,9 +186,17 @@ namespace BinaryFormatter
             System.Console.WriteLine("\n\tChunkSize = the number of bytes per row. A byte is 2 characters: 00 - FF.");
             System.Console.WriteLine("\tMaximum line length = (ChunkSize * 2) + 1.");
             System.Console.WriteLine("\tDefault ChunkSize = 10000");
-            System.Console.WriteLine("\tDefault OutputFile = {binary_file_name}.sql\n");
+            System.Console.WriteLine("\tDefault OutputFile = {path\\to\\binary_file_name}.sql\n");
+            return;
+        }
+
+        private static void DisplayError(string ErrorMessage)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(ErrorMessage);
+            Console.ResetColor();
+
             return;
         }
     }
-
 }
