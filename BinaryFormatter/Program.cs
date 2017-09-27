@@ -14,10 +14,12 @@ using System.IO;
 
 namespace BinaryFormatter
 {
-	class Program
-	{
-		static void Main(string[] args)
-		{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Title = "Binary Formatter (from Sql Quantum Leap -- https://SqlQuantumLeap.com/)";
+
             if (args.Length < 1)
             {
                 DisplayUsage();
@@ -27,40 +29,40 @@ namespace BinaryFormatter
 
             int _ChunkSize = 10000;
             bool _ChunkSizeIsCustom = false;
-			string _FilePath = String.Empty;
-			string _OutFile = String.Empty;
+            string _FilePath = String.Empty;
+            string _OutFile = String.Empty;
 
-			foreach (string _Arg in args)
-			{
-				int _TempSize;
+            foreach (string _Arg in args)
+            {
+                int _TempSize;
 
-				if (int.TryParse(_Arg, out _TempSize))
-				{
-					_ChunkSize = _TempSize;
+                if (int.TryParse(_Arg, out _TempSize))
+                {
+                    _ChunkSize = _TempSize;
                     _ChunkSizeIsCustom = true;
-				}
-				else
-				{
-					if (_FilePath == string.Empty)
-					{
-						_FilePath = _Arg;
-					}
-					else if (_OutFile == String.Empty)
-					{
-						_OutFile = _Arg;
-					}
-				}
-			}
+                }
+                else
+                {
+                    if (_FilePath == string.Empty)
+                    {
+                        _FilePath = _Arg;
+                    }
+                    else if (_OutFile == String.Empty)
+                    {
+                        _OutFile = _Arg;
+                    }
+                }
+            }
 
-			if (_FilePath == String.Empty)
-			{
+            if (_FilePath == String.Empty)
+            {
                 throw new ArgumentNullException("You must specify a source file.");
-			}
-			if (_OutFile == String.Empty)
-			{
+            }
+            if (_OutFile == String.Empty)
+            {
                 _OutFile = Path.GetDirectoryName(_FilePath) + @"\" +
-                    Path.GetFileNameWithoutExtension(_FilePath) + @".sql";
-			}
+                Path.GetFileNameWithoutExtension(_FilePath) + @".sql";
+            }
             if (!_ChunkSizeIsCustom)
             {
                 string _CustomChunkSizeString;
@@ -98,55 +100,55 @@ namespace BinaryFormatter
                 }
             }
 
-			FileStream _FileIn = null;
-			BinaryReader _DataIn = null;
-			FileStream _FileOut = null;
-			StreamWriter _DataOut = null;
+            FileStream _FileIn = null;
+            BinaryReader _DataIn = null;
+            FileStream _FileOut = null;
+            StreamWriter _DataOut = null;
 
-			try
-			{
-				using (_FileIn = new FileStream(_FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-				{
-					using (_DataIn = new BinaryReader(_FileIn))
-					{
+            try
+            {
+                using (_FileIn = new FileStream(_FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    using (_DataIn = new BinaryReader(_FileIn))
+                    {
 
-						using (_FileOut = new FileStream(_OutFile, FileMode.Create, FileAccess.Write, FileShare.Read))
-						{
-							using (_DataOut = new StreamWriter(_FileOut, Encoding.ASCII))
-							{
-								_DataIn.BaseStream.Position = 0;
+                        using (_FileOut = new FileStream(_OutFile, FileMode.Create, FileAccess.Write, FileShare.Read))
+                        {
+                            using (_DataOut = new StreamWriter(_FileOut, Encoding.ASCII))
+                            {
+                                _DataIn.BaseStream.Position = 0;
 
-								byte[] _Bytes = new byte[_ChunkSize];
+                                byte[] _Bytes = new byte[_ChunkSize];
 
-								int _ReadAmount = 0;
+                                int _ReadAmount = 0;
 
-								while ((_ReadAmount = _DataIn.Read(_Bytes, 0, _ChunkSize)) > 0)
-								{
-									for (int _Index = 0; _Index < _ReadAmount; _Index++)
-									{
-										_DataOut.Write(_Bytes[_Index].ToString("X2"));
-									}
+                                while ((_ReadAmount = _DataIn.Read(_Bytes, 0, _ChunkSize)) > 0)
+                                {
+                                    for (int _Index = 0; _Index < _ReadAmount; _Index++)
+                                    {
+                                        _DataOut.Write(_Bytes[_Index].ToString("X2"));
+                                    }
 
-									if (_DataIn.BaseStream.Position < _DataIn.BaseStream.Length)
-									{
-										_DataOut.WriteLine(@"\");
-									}
-								}
+                                    if (_DataIn.BaseStream.Position < _DataIn.BaseStream.Length)
+                                    {
+                                        _DataOut.WriteLine(@"\");
+                                    }
+                                }
 
                                 _DataOut.WriteLine(String.Empty);
-							}
-						}
-					}
-				}
-			}
-			catch (Exception _Exception)
-			{
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception _Exception)
+            {
                 DisplayError(_Exception.Message);
-                Console.WriteLine("\n\tPress the <any> key to continue...\n");
-				Console.ReadLine();
-			}
-			finally
-			{
+                Console.WriteLine("\n\tPress any key to continue...\n");
+                Console.ReadLine();
+            }
+            finally
+            {
                 if (_DataOut != null)
                 {
                     _DataOut.Dispose();
@@ -163,30 +165,32 @@ namespace BinaryFormatter
                 {
                     _FileIn.Dispose();
                 }
-			}
+            }
 
-			
-		}
+
+        }
 
         private static void DisplayUsage()
         {
-            System.Console.WriteLine("\nBinaryFormatter");
-            System.Console.WriteLine("Version {0}",
+            Console.WriteLine("\nBinaryFormatter");
+            Console.WriteLine("Version {0}",
                 System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(3));
-            System.Console.WriteLine("Copyright (c) 2009-2017 Solomon Rutzky. All rights reserved.\n");
-            System.Console.WriteLine("https://SqlQuantumLeap.com/\n");
+            Console.WriteLine("Copyright (c) 2009-2017 Solomon Rutzky. All rights reserved.\n");
+            Console.WriteLine("https://SqlQuantumLeap.com/\n");
 
-            System.Console.WriteLine("Format binary file into hex string for SQL script.");
-            System.Console.WriteLine("Output broken into multiple lines of \"ChunkSize\" bytes.");
-            System.Console.WriteLine("If there are multiple lines, all lines except the final");
-            System.Console.WriteLine("line are appended with the line-continuation character of: \\");
+            Console.WriteLine("Format binary file into hex string for SQL script.");
+            Console.WriteLine("Output broken into multiple lines of \"ChunkSize\" bytes.");
+            Console.WriteLine("If there are multiple lines, all lines except the final");
+            Console.WriteLine("line are appended with the line-continuation character of: \\");
 
-            System.Console.WriteLine("\nUsage:");
-            System.Console.WriteLine("\n\tBinaryFormatter path\\to\\binary_file.ext [path\\to\\OutputFile.sql] [ChunkSize]");
-            System.Console.WriteLine("\n\tChunkSize = the number of bytes per row. A byte is 2 characters: 00 - FF.");
-            System.Console.WriteLine("\tMaximum line length = (ChunkSize * 2) + 1.");
-            System.Console.WriteLine("\tDefault ChunkSize = 10000");
-            System.Console.WriteLine("\tDefault OutputFile = {path\\to\\binary_file_name}.sql\n");
+            Console.WriteLine("\nUsage:");
+            Console.WriteLine("\n\tBinaryFormatter path\\to\\binary_file.ext [path\\to\\OutputFile.sql] [ChunkSize]");
+            Console.WriteLine("\n\tChunkSize = the number of bytes per row. A byte is 2 characters: 00 - FF.");
+            Console.WriteLine("\tMaximum line length = (ChunkSize * 2) + 1.");
+            Console.WriteLine("\tDefault ChunkSize = 10000");
+            Console.WriteLine("\tDefault OutputFile = {path\\to\\binary_file_name}.sql\n");
+            Console.WriteLine("Visit https://SqlQuantumLeap.com/ for other useful utilities and more.");
+
             return;
         }
 
