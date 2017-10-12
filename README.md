@@ -55,6 +55,6 @@ To set this up, do the following:
 1. For the **Run:** drop-down, select **Minimized**
 1. Click the **OK** button
 
-And, you can even have two shortcuts, one with a sspecified ChuckSize, and one without :smile: .
+And, you can even have two shortcuts, one with a specified ChuckSize, and one without :smile: .
 
 
