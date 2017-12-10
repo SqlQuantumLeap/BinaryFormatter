@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Format binary file into hex string for SQL script.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("https://SqlQuantumLeap.com/")]
-[assembly: AssemblyProduct("BinaryFormatter")]
+[assembly: AssemblyProduct("BinaryFormatter ( https://SqlQuantumLeap.com/ )")]
 [assembly: AssemblyCopyright("Copyright © 2009-2017 Solomon Rutzky. All rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -15,5 +15,5 @@ using System.Runtime.InteropServices;
 [assembly: Guid("74a1e9c4-ed9b-4f12-93f7-ad7d1ee02a2b")]
 
 
-[assembly: AssemblyVersion("1.0.2.0")]
-[assembly: AssemblyFileVersion("1.0.2.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

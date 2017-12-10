@@ -7,7 +7,7 @@
     <ProjectGuid>{74A1E9C4-ED9B-4F12-93F7-AD7D1EE02A2B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BinaryFormatter</RootNamespace>
+    <RootNamespace>SqlQuantumLeap.BinaryFormatter</RootNamespace>
     <AssemblyName>BinaryFormatter</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,17 +33,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Display.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Tests\01 - Test No Inputs.cmd" />
+    <None Include="Tests\02 - Test Help Parameters.cmd" />
+    <None Include="Tests\03 - Test All Defaults.cmd" />
+    <None Include="Tests\04 - Test User Entered 7.cmd" />
+    <None Include="Tests\05 - Test Passed-In 7.cmd" />
+    <None Include="Tests\06 - Test Passed-In 8 %28Fail%29.cmd" />
+    <None Include="Tests\07 - Test Console and File.cmd" />
+    <None Include="Tests\08 - Test Console and Clipboard and NoFile.cmd" />
+    <None Include="Tests\09 - Test Clipboard and NoFile.cmd" />
+    <None Include="Tests\SampleBinary.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tests\SampleOutput_ChunkSize-100%28orMore%29.sql" />
+    <Content Include="Tests\SampleOutput_ChunkSize-7.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tests\CreateSampleFile.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
