@@ -33,19 +33,23 @@ CDEF
 
 ## Command Prompt / Automation Usage
 
-`BinaryFormatter path\to\binary_file_name.ext [ path\to\OutputFile.sql ] [ ChunkSize ]
-	[ /Clipboard ] [ /Console ] [ /NoFile ]`
+
+```
+BinaryFormatter path\to\binary_file_name.ext [ path\to\OutputFile.sql ] [ ChunkSize ]
+	[ /Clipboard ] [ /Console ] [ /NoFile ]
+```
 
 * _ChunkSize_ = the number of bytes per row. A byte is 2 characters: 00 - FF.
 * /Clipboard = Copy output to clipboard (to then paste with Control-V)
 * /Console = Send output to console
 * /NoFile = Do not save to file, even if OutputFile is specified
 
+Notes:
+
 * Default ChunkSize = 10000
 * Default OutputFile = {path\\to\\binary\_file\_name}.sql
 * Maximum line length = (ChunkSize * 2) + 1.
-
-If `ChunkSize` is not supplied, the user is prompted to enter a value. A default value is shown inside square-brackets (e.g. `[ 10000 ]`), and hitting <kbd>Enter</kbd> without entering anything else will accept that default. Or, you can enter an integer value that is above zero. Any other value will cause the request to be repeated.
+* If `ChunkSize` is not supplied, the user is prompted to enter a value. A default value is shown inside square-brackets (e.g. `[ 10000 ]`), and hitting <kbd>Enter</kbd> without entering anything else will accept that default. Or, you can enter an integer value that is above zero. Any other value will cause the request to be repeated.
 
 
 ## Point-and-Click / "Send to" Usage
@@ -67,10 +71,10 @@ To set this up, do the following:
 1. Right-click on the `Binary Formatter` shortcut and select **Properties**
 1. Go to the **Shortcut** tab
 1. In the **Target:** text field, add any combination of the following options to the right of `...BinaryFormatter.exe`:
-  * An `<integer>` &gt;= 1 (for ChunkSize).  I find that a value between 40 and 70 works best.
-  * `/Clipboard`
-  * `/Console`
-  * `/NoFile`
+    * An `<integer>` &gt;= 1 (for ChunkSize).  I find that a value between 40 and 70 works best for scripts that will be posted online, and up to 10,000 (the default) is fine for Assemblies in release scripts.
+    * `/Clipboard`
+    * `/Console`
+    * `/NoFile`
 1. For the **Run:** drop-down, select **Minimized**
 1. Click the **OK** button
 
