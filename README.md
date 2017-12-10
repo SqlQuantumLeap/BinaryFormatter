@@ -39,10 +39,10 @@ BinaryFormatter path\to\binary_file_name.ext [ path\to\OutputFile.sql ] [ ChunkS
 	[ /Clipboard ] [ /Console ] [ /NoFile ]
 ```
 
-* _ChunkSize_ = the number of bytes per row. A byte is 2 characters: 00 - FF.
-* /Clipboard = Copy output to clipboard (to then paste with Control-V)
-* /Console = Send output to console
-* /NoFile = Do not save to file, even if OutputFile is specified
+* `ChunkSize` = the number of bytes per row. A byte is 2 characters: 00 - FF.
+* `/Clipboard` = Copy output to clipboard (to then paste with Control-V)
+* `/Console` = Send output to console
+* `/NoFile` = Do not save to file, even if OutputFile is specified
 
 Notes:
 
@@ -71,14 +71,21 @@ To set this up, do the following:
 1. Right-click on the `Binary Formatter` shortcut and select **Properties**
 1. Go to the **Shortcut** tab
 1. In the **Target:** text field, add any combination of the following options to the right of `...BinaryFormatter.exe`:
-    * An `<integer>` &gt;= 1 (for ChunkSize).  I find that a value between 40 and 70 works best for scripts that will be posted online, and up to 10,000 (the default) is fine for Assemblies in release scripts.
+    * An `<integer>` &gt;= 1 (for ChunkSize).  I find that a value between 39 and 70 works best for scripts that will be posted online, and up to 10,000 (the default) is fine for Assemblies in release scripts.
     * `/Clipboard`
     * `/Console`
     * `/NoFile`
 1. For the **Run:** drop-down, select **Minimized**
 1. Click the **OK** button
 
+
 And, you can even have multiple shortcuts, each one with a different combination of options :smile: .
+
+### Example Target:
+
+I use the following for testing. I use a ChunkSize of 39 since 39 bytes * 2 = 78 characters, plus 1 for the backslash = 79 characters total on all but the final line (unless there is only a single line, then no backslash), which is under the 80 character limit of some environments.
+
+`...BinaryFormatter.exe 39 /Clipboard /NoFile`
 
 
 ## Roadmap
