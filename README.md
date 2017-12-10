@@ -1,7 +1,13 @@
 # BinaryFormatter
 
-Simple command-line utility that reads in a binary file and writes out a
-text file containing the hex representation of the source bytes.
+Simple command-line utility that reads in a binary file and converts it to a string representation of those bytes (e.g. single byte of "3C" converts to two characters "3" followed by "C").
+
+Output options are any combination of:
+
+1. Text File
+1. Clipboard (to then paste via <kbd>Control</kbd> + <kbd>V</kbd>)
+1. Console (mostly for debugging / testing / research)
+
 
 A feature / benefit of BinaryFormatter is that it splits the hex string
 across N lines of "ChunkSize" bytes each, with all lines prior to the
@@ -13,7 +19,7 @@ This was originally intended for automating builds of SQLCLR projects (i.e. conv
 
 Source binary file = `0123456789ABCDEF`
 
-Output file, using a _ChunkSize_ of `3`, contains:
+Output, using a _ChunkSize_ of `3`, contains:
 
 ```
 012345\
@@ -21,14 +27,23 @@ Output file, using a _ChunkSize_ of `3`, contains:
 CDEF
 ```
 
+### Requirements
+
+.NET 4.5.2 (or newer)
+
 ## Command Prompt / Automation Usage
 
-`BinaryFormatter path\to\binary_file_name.ext [ path\to\OutputFile.sql ] [ ChunkSize ]`
+`BinaryFormatter path\to\binary_file_name.ext [ path\to\OutputFile.sql ] [ ChunkSize ]
+	[ /Clipboard ] [ /Console ] [ /NoFile ]`
 
 * _ChunkSize_ = the number of bytes per row. A byte is 2 characters: 00 - FF.
-* Maximum line length = (ChunkSize * 2) + 1.
+* /Clipboard = Copy output to clipboard (to then paste with Control-V)
+* /Console = Send output to console
+* /NoFile = Do not save to file, even if OutputFile is specified
+
 * Default ChunkSize = 10000
 * Default OutputFile = {path\\to\\binary\_file\_name}.sql
+* Maximum line length = (ChunkSize * 2) + 1.
 
 If `ChunkSize` is not supplied, the user is prompted to enter a value. A default value is shown inside square-brackets (e.g. `[ 10000 ]`), and hitting <kbd>Enter</kbd> without entering anything else will accept that default. Or, you can enter an integer value that is above zero. Any other value will cause the request to be repeated.
 
@@ -48,13 +63,20 @@ To set this up, do the following:
 1. Change the name to: **Binary Formatter**
 1. Click the **Finish** button
     <br><br>
-  At this point you have a shortcut that will always prompt you to enter in a ChunkSize, or at least just hit <kbd>Enter</kbd> to accept the default value. If you want to convert files without being prompted to specify one, do the following:<br><br>
+  At this point you have a shortcut that will always prompt you to enter in a ChunkSize value, or at least just hit <kbd>Enter</kbd> to accept the default value, and will save to a file (no Console or Clipboard) using the default filename. If you want to convert files without being prompted to specify the Chunk Size, and/or if you some other combination of output options, do the following:<br><br>
 1. Right-click on the `Binary Formatter` shortcut and select **Properties**
 1. Go to the **Shortcut** tab
-1. In the **Target:** text field, add a number to the right of `...BinaryFormatter.exe`. I find that a value between 40 and 70 works best.
+1. In the **Target:** text field, add any combination of the following options to the right of `...BinaryFormatter.exe`:
+  * An `<integer>` &gt;= 1 (for ChunkSize).  I find that a value between 40 and 70 works best.
+  * `/Clipboard`
+  * `/Console`
+  * `/NoFile`
 1. For the **Run:** drop-down, select **Minimized**
 1. Click the **OK** button
 
-And, you can even have two shortcuts, one with a specified ChuckSize, and one without :smile: .
+And, you can even have multiple shortcuts, each one with a different combination of options :smile: .
 
 
+## Roadmap
+
+Create a separate Visual Studio project that re-uses relevant portions of the code and compile into a DLL / Assembly. The purpose would be to allow for direct use within code or frameworks that can reference Assemblies. The result would be a simple method call that returns a string (and/or creates an output file) which can be used inline, and no need to shell out to run an executable and then, most likely, read in the contents of the output file.
